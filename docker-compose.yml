@@ -3,4 +3,4 @@ services :
   web :
      image : marahman418/test-website:latest
      ports :
-         - "80:80"
+         - "8080:8080"
