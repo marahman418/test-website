@@ -2,6 +2,5 @@ version : "3.3"
 services :
   web :
      image : marahman418/test-website:latest
-     pull: always
      ports :
          - "8088:80"
