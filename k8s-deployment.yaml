@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: webserver
-          image: your-username/webserver:latest  # Replace with your Docker Hub image
+          image: marahman418/webserver:latest  # Replace with your Docker Hub image
           ports:
             - containerPort: 80
 ---
