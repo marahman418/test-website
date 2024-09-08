@@ -44,8 +44,8 @@ pipeline {
                     withCredentials([usernamePassword(credentialsId: 'docker-registry-credentials', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
                         sh """
                             docker -H $DOCKER_HOST login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-                            docker -H $DOCKER_HOST tag webserver $DOCKER_USERNAME/webserver:latest
-                            docker -H $DOCKER_HOST push $DOCKER_USERNAME/webserver:latest
+                            docker -H $DOCKER_HOST tag webserver marahman418/webserver:latest
+                            docker -H $DOCKER_HOST push marahman418/webserver:latest
                         """
                     }
                 }
