@@ -5,7 +5,7 @@ metadata:
   labels:
     app: webserver
 spec:
-  replicas: 2
+  replicas: 10  # Scale up to 10 replicas
   selector:
     matchLabels:
       app: webserver
@@ -17,20 +17,22 @@ spec:
       containers:
         - name: webserver
           image: marahman418/webserver:latest  # Replace with your Docker Hub image
+          imagePullPolicy: Always  # Ensure the latest image is always pulled
           ports:
-            - containerPort: 80
+            - containerPort: 80  # Expose port 80 on the container
+
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: webserver-service
 spec:
-  type: LoadBalancer
+  type: NodePort  # Use NodePort to expose the service externally
   selector:
     app: webserver
   ports:
     - protocol: TCP
-      port: 80
-      targetPort: 80
-
+      port: 80  # Port on the Service
+      targetPort: 80  # Port on the Pod
+      nodePort: 32000  # NodePort (between 30000-32767)
 
