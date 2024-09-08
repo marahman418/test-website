@@ -8,8 +8,8 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                // Clone your Git repository
-                git 'https://github.com/marahman418/test-website.git'
+                // Clone your Git repository and specify the correct branch name
+                git branch: 'main', url: 'https://github.com/marahman418/test-website.git'
             }
         }
 
@@ -29,7 +29,7 @@ pipeline {
                     sh 'docker -H $DOCKER_HOST run -d --name apache-test -p 8080:80 webserver'
 
                     // Test the container to check if it's running correctly
-                    sh 'curl -I http://192.168.112.132:8080'  // Replace <docker-server-ip> with your Docker server IP
+                    sh 'curl -I http://192.168.112.132:8080'  // Replace with your Docker server IP
 
                     // Stop and remove the test container after testing
                     sh 'docker -H $DOCKER_HOST stop apache-test && docker -H $DOCKER_HOST rm apache-test'
