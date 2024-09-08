@@ -4,7 +4,7 @@ pipeline {
     environment {
         DOCKER_HOST = 'tcp://192.168.112.132:2375'  // Docker server IP
         KUBECONFIG = '/var/lib/jenkins/.kube/config'  // Path to kubeconfig file on Jenkins
-        DOCKER_IMAGE = 'marahman418/webserver:latest'  // Docker Hub image
+        DOCKER_IMAGE = 'your-username/webserver:latest'  // Docker Hub image
     }
 
     stages {
@@ -34,8 +34,8 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'docker-registry-credentials', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
                     sh """
                         docker -H $DOCKER_HOST login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-                        docker -H $DOCKER_HOST tag webserver marahman418/webserver:latest
-                        docker -H $DOCKER_HOST push marahman418/webserver:latest
+                        docker -H $DOCKER_HOST tag webserver $DOCKER_USERNAME/webserver:latest
+                        docker -H $DOCKER_HOST push $DOCKER_USERNAME/webserver:latest
                     """
                 }
             }
@@ -44,36 +44,9 @@ pipeline {
         stage('Deploy to Kubernetes') {
             steps {
                 script {
-                    // Create or update the deployment using kubectl
+                    // Deploy the application using the YAML file from the Git repository
                     sh """
-                        kubectl --kubeconfig=$KUBECONFIG apply -f - <<EOF
-                        apiVersion: apps/v1
-                        kind: Deployment
-                        metadata:
-                          name: webserver
-                          labels:
-                            app: webserver
-                        spec:
-                          replicas: 2
-                          selector:
-                            matchLabels:
-                              app: webserver
-                          template:
-                            metadata:
-                              labels:
-                                app: webserver
-                            spec:
-                              containers:
-                              - name: webserver
-                                image: $DOCKER_IMAGE
-                                ports:
-                                - containerPort: 80
-                        EOF
-                    """
-
-                    // Expose the deployment as a service
-                    sh """
-                        kubectl --kubeconfig=$KUBECONFIG expose deployment webserver --type=LoadBalancer --name=webserver-service --port=80
+                        kubectl --kubeconfig=$KUBECONFIG apply -f k8s-deployment.yaml
                     """
                 }
             }
@@ -92,7 +65,4 @@ pipeline {
         }
     }
 }
-
-
-
 
