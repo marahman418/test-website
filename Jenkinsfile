@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_HOST = 'tcp://192.168.112.132:2375'  // Docker server IP
+        DOCKER_HOST = 'tcp://192.168.112.141:2375'  // Docker server IP
         KUBECONFIG = '/var/lib/jenkins/.kube/config'  // Path to kubeconfig file on Jenkins
         DOCKER_IMAGE = 'your-username/webserver:latest'  // Docker Hub image
     }
