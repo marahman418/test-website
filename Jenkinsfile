@@ -23,7 +23,7 @@ pipeline {
         stage('Test Docker Container') {
             steps {
                 sh 'docker -H $DOCKER_HOST run -d --name apache-test -p 8080:80 webserver'
-                sh 'curl -I http://192.168.112.132:8080'
+                sh 'curl -I http://192.168.112.141:8080'
                 sh 'docker -H $DOCKER_HOST stop apache-test'
                 sh 'docker -H $DOCKER_HOST rm apache-test'
             }
